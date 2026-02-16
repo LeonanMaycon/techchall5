@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "Plano Semanal - Matemática - Frações",
+    "discipline": "Matemática",
+    "grade": "7º Ano",
+    "createdAt": "2026-02-14",
+    "totalDays": 5,
+    "rows": []
+  },
+  {
+    "id": "2",
+    "title": "Plano Semanal - Português - Interpretação de Texto",
+    "discipline": "Português",
+    "grade": "8º Ano",
+    "createdAt": "2026-02-10",
+    "totalDays": 4,
+    "rows": []
+  }
+]
