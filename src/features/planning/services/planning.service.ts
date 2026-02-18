@@ -1,14 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import { usePlanningStore } from '../planning.store'
 import type { Planning } from '../planning.types'
-
-const weekDays = [
-  'Segunda-feira',
-  'Terça-feira',
-  'Quarta-feira',
-  'Quinta-feira',
-  'Sexta-feira',
-]
+import { generatePlanningWithAI } from './ai.service'
 
 interface CreatePlanningPayload {
   discipline: string
@@ -25,9 +18,8 @@ interface CreatePlanningPayload {
 export async function createPlanning(
   payload: CreatePlanningPayload
 ): Promise<Planning> {
-  await new Promise((resolve) => setTimeout(resolve, 1500))
-
-  const days = weekDays.slice(0, Number(payload.totalDays))
+  // Generate planning rows using AI
+  const rows = await generatePlanningWithAI(payload)
 
   const planning: Planning = {
     id: uuid(),
@@ -38,15 +30,7 @@ export async function createPlanning(
     totalDays: payload.totalDays,
     prompt: payload.prompt,
     notes: payload.notes,
-    rows: days.map((day) => ({
-      day,
-      objective:
-        payload.weeklyObjective || 'Objetivo da aula',
-      content: `Conteúdo relacionado a ${payload.theme}`,
-      methodology:
-        'Aula expositiva com exercícios práticos',
-      activity: 'Lista de exercícios para fixação',
-    })),
+    rows,
   }
 
   usePlanningStore.getState().addPlanning(planning)
@@ -71,9 +55,8 @@ export async function updatePlanning(
   payload: UpdatePlanningPayload,
   existing: Planning
 ): Promise<Planning> {
-  await new Promise((resolve) => setTimeout(resolve, 800))
-
-  const days = existing.rows.map((r) => r.day).slice(0, payload.totalDays)
+  // Generate updated planning rows using AI
+  const rows = await generatePlanningWithAI(payload)
 
   const updated: Planning = {
     ...existing,
@@ -83,13 +66,7 @@ export async function updatePlanning(
     totalDays: payload.totalDays,
     notes: payload.notes,
     prompt: payload.prompt,
-    rows: days.map((day) => ({
-      day,
-      objective: payload.weeklyObjective || 'Objetivo da aula',
-      content: `Conteúdo relacionado a ${payload.theme}`,
-      methodology: 'Aula expositiva com exercícios práticos',
-      activity: 'Lista de exercícios para fixação',
-    })),
+    rows,
   }
 
   usePlanningStore.getState().updatePlanning(updated)
