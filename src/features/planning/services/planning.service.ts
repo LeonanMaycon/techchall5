@@ -23,7 +23,7 @@ export async function createPlanning(
 
   const planning: Planning = {
     id: uuid(),
-    title: `Plano Semanal - ${payload.discipline} - ${payload.theme}`,
+    title: `Planejamento - ${payload.discipline} - ${payload.theme}`,
     discipline: payload.discipline,
     grade: payload.grade,
     createdAt: new Date().toISOString().split('T')[0],
@@ -60,7 +60,7 @@ export async function updatePlanning(
 
   const updated: Planning = {
     ...existing,
-    title: `Plano Semanal - ${payload.discipline} - ${payload.theme}`,
+    title: `Planejamento - ${payload.discipline} - ${payload.theme}`,
     discipline: payload.discipline,
     grade: payload.grade,
     totalDays: payload.totalDays,

@@ -6,7 +6,7 @@ export const exportPlanningToPDF = (planning: Planning) => {
   const doc = new jsPDF('p', 'mm', 'a4')
 
   doc.setFontSize(18)
-  doc.text(planning.title, 14, 20)
+  doc.text('Planejamento de Aula', 14, 20)
 
   // Cabeçalho com informações gerais
   doc.setFontSize(12)
