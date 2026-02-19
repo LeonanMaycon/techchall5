@@ -1,73 +1,78 @@
-# React + TypeScript + Vite
+    # POS FIAP — Planejador de Aulas (techchall5)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+    Aplicação React + TypeScript criada como desafio técnico. Permite gerar planejamentos de aula semanais usando integração com um modelo de linguagem (Groq / Llama), armazenar localmente e exportar em PDF.
 
-Currently, two official plugins are available:
+    **Principais funcionalidades**
+    - Geração de planejamentos por AI a partir de um prompt e metadados da turma
+    - CRUD de planejamentos (persistência em `localStorage`)
+    - Exportação de planejamentos para PDF
+    - Autenticação simples (armazenada localmente com persistência)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    **Stack principal**
+    - Vite + React + TypeScript
+    - Zustand (state management)
+    - @tanstack/react-router (roteamento)
+    - TailwindCSS
+    - Groq / Llama (via API) para geração de conteúdo
+    - jsPDF + jspdf-autotable para exportação de PDF
 
-## React Compiler
+    ## Começando (rápido)
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+    Pré-requisitos: Node (18+ recomendado) e `pnpm`.
 
-## Expanding the ESLint configuration
+    Instalar dependências:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+    ```bash
+    pnpm install
+    ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+    Rodar em desenvolvimento:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+    ```bash
+    pnpm dev
+    ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+    Build de produção:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+    ```bash
+    pnpm build
+    pnpm preview
+    ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+    Lint:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+    ```bash
+    pnpm lint
+    ```
+
+    ## Estrutura importante do projeto
+    - `src/app/router.tsx` — rotas públicas e protegidas da aplicação
+    - `src/features/auth` — store e componentes de login
+    - `src/features/planning` — lógica de planejamento, serviços e componentes
+    - `src/features/planning/services/ai.service.ts` — integração com API de AI
+    - `src/features/planning/planning.repository.ts` — persistência em `localStorage`
+    - `src/shared/functions/pdf-utils.ts` — exportação para PDF
+
+    ## Variáveis de ambiente
+    - `VITE_GROQ_API_KEY` — chave da API Groq (necessária para geração via AI). Nunca commit a chave; use um arquivo `.env.local` no seu ambiente de desenvolvimento:
+
+    ```
+    VITE_GROQ_API_KEY=suachaveaqui
+    ```
+
+    Se a variável não estiver configurada, a geração com AI falhará e apresentará um erro informando a falta da chave.
+
+    ## Observações de implementação
+    - State management: `zustand` é usado para `auth` e `planning`. `auth` usa `persist` para gravar no `localStorage`.
+    - Repositório: `planning.repository` grava e recupera dados de `localStorage` sob a chave `plannings-db`.
+    - Geração AI: `ai.service.ts` monta um prompt em português e injeta no endpoint Groq. A resposta é parseada como JSON e validada antes de ser usada.
+
+    ## Como contribuir
+    - Abra uma issue descrevendo o objetivo.
+    - Faça um fork, crie branch e envie PR com mudanças pequenas e testáveis.
+
+    ## Licença
+    Projeto possui `LICENSE` na raiz.
+
+    ## Documentação técnica
+    Veja `docs/TECHNICAL.md` para detalhes de arquitetura, fluxos e decisões de implementação.
